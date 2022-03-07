@@ -6,11 +6,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.work.*
 import com.ameen.workmanagerexample.databinding.ActivityMainBinding
 import com.ameen.workmanagerexample.worker.SimpleWorker
+import com.ameen.workmanagerexample.worker.SimpleWorkerRetry
+import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    val workInstance = WorkManager.getInstance(this)
+    private val workInstance = WorkManager.getInstance(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +47,20 @@ class MainActivity : AppCompatActivity() {
         binding.buttonResetStatus.setOnClickListener {
             WorkStatusSingleton.workStatus = false
             WorkStatusSingleton.workStatusMessage = ""
+            WorkStatusSingleton.workRetryCount = 0
+        }
+
+
+        binding.buttonRetryWork.setOnClickListener {
+            val workRequest = OneTimeWorkRequestBuilder<SimpleWorkerRetry>()
+                .setBackoffCriteria(
+                    BackoffPolicy.LINEAR, // Default is Exponential
+                    10, //Default is 10 Seconds
+                    TimeUnit.SECONDS
+                )
+                .build()
+
+            workInstance.enqueue(workRequest)
         }
     }
 }

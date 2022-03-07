@@ -34,4 +34,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonWorkStatus" />
 
+    <Button
+        android:id="@+id/buttonRetryWork"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Retry Worker"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonResetStatus" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
