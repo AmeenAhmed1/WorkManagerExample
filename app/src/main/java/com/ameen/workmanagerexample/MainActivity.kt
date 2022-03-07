@@ -3,10 +3,7 @@ package com.ameen.workmanagerexample
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.work.Data
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
-import androidx.work.workDataOf
+import androidx.work.*
 import com.ameen.workmanagerexample.databinding.ActivityMainBinding
 import com.ameen.workmanagerexample.worker.SimpleWorker
 
@@ -21,10 +18,19 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.buttonStartWork.setOnClickListener {
+
+            val constraints = Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .setRequiresCharging(true)
+                .build()
+
             val data = workDataOf("WORK_DATA" to "YOUR MESSAGE.")
+
             val workRequest = OneTimeWorkRequestBuilder<SimpleWorker>()
                 .setInputData(data)
+                .setConstraints(constraints)
                 .build()
+
             workInstance.enqueue(workRequest)
         }
 
