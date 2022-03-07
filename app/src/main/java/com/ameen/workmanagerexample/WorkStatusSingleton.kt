@@ -1,6 +1,6 @@
 package com.ameen.workmanagerexample
 
 object WorkStatusSingleton {
-    val workStatus: Boolean = false
-    val workStatusMessage: String = ""
+    var workStatus: Boolean = false
+    var workStatusMessage: String = ""
 }
