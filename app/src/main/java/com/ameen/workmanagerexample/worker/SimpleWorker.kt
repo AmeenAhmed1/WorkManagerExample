@@ -10,6 +10,7 @@ class SimpleWorker(context: Context, parameters: WorkerParameters) : Worker(cont
     override fun doWork(): Result {
         Thread.sleep(500)
         WorkStatusSingleton.workStatus = true
+        WorkStatusSingleton.workStatusMessage = inputData.getString("WORK_DATA").toString()
         return Result.success()
     }
 }
