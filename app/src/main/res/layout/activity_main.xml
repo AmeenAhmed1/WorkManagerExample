@@ -43,5 +43,74 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonResetStatus" />
 
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="Chain Workers"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonRetryWork" />
+
+
+    <Button
+        android:id="@+id/buttonSingleChainWorkSuccess"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Single Chain Work [Success]"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <Button
+        android:id="@+id/buttonSingleChainWorkFail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Single Chain Work [Fail]"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonSingleChainWorkSuccess" />
+
+    <Button
+        android:id="@+id/buttonGroupChainWorkSuccess"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Group Chain Work [Success]"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonSingleChainWorkFail" />
+
+    <Button
+        android:id="@+id/buttonGroupChainWorkFail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Group Chain Work [Fail]"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonGroupChainWorkSuccess" />
+
+    <Button
+        android:id="@+id/buttonMultipleChainWorkSuccess"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Multiple Chain Work [Success]"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonGroupChainWorkFail" />
+
+    <Button
+        android:id="@+id/buttonMultipleChainWorkFail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Multiple Chain Work [Fail]"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonMultipleChainWorkSuccess" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
