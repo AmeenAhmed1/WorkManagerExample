@@ -46,5 +46,7 @@ dependencies {
 
     implementation "androidx.work:work-runtime:2.7.1"
     implementation "androidx.work:work-runtime-ktx:2.7.1"
+    androidTestImplementation("androidx.work:work-testing:2.7.1")
+
 
 }
