@@ -105,5 +105,51 @@ class MainActivity : AppCompatActivity() {
                 .then(thirdWorkRequest)
                 .enqueue()
         }
+
+        binding.buttonGroupChainWorkSuccess.setOnClickListener {
+            val firstWorkRequest1 = OneTimeWorkRequestBuilder<FirstChainWorker>()
+                .setInputData(workDataOf("isSuccess" to true))
+                .build()
+
+            val firstWorkRequest2 = OneTimeWorkRequestBuilder<FirstChainWorker>()
+                .setInputData(workDataOf("isSuccess" to true))
+                .build()
+
+            val secondWorkRequest = OneTimeWorkRequestBuilder<SecondChainWorker>()
+                .setInputData(workDataOf("isSuccess" to true))
+                .build()
+
+            val thirdWorkRequest = OneTimeWorkRequestBuilder<ThirdChainWorker>()
+                .setInputData(workDataOf("isSuccess" to true))
+                .build()
+
+            workInstance.beginWith(listOf(firstWorkRequest1, firstWorkRequest2))
+                .then(secondWorkRequest)
+                .then(thirdWorkRequest)
+                .enqueue()
+        }
+
+        binding.buttonGroupChainWorkFail.setOnClickListener {
+            val firstWorkRequest1 = OneTimeWorkRequestBuilder<FirstChainWorker>()
+                .setInputData(workDataOf("isSuccess" to true))
+                .build()
+
+            val firstWorkRequest2 = OneTimeWorkRequestBuilder<FirstChainWorker>()
+                .setInputData(workDataOf("isSuccess" to false))
+                .build()
+
+            val secondWorkRequest = OneTimeWorkRequestBuilder<SecondChainWorker>()
+                .setInputData(workDataOf("isSuccess" to true))
+                .build()
+
+            val thirdWorkRequest = OneTimeWorkRequestBuilder<ThirdChainWorker>()
+                .setInputData(workDataOf("isSuccess" to true))
+                .build()
+
+            workInstance.beginWith(listOf(firstWorkRequest1, firstWorkRequest2))
+                .then(secondWorkRequest)
+                .then(thirdWorkRequest)
+                .enqueue()
+        }
     }
 }
