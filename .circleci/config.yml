@@ -28,7 +28,7 @@ jobs:
       - checkout
       - run:
           name: Run Tests
-          command: ./gradlew testDevDebug
+          command: ./gradlew test
       - run:
           name: Save test results (html page, see Artifacts)
           command: |
