@@ -1,0 +1,56 @@
+version: 2.1
+
+config_docker: &config_docker
+  docker:
+    - image: cimg/android:2021.10.2
+  resource_class: large
+  working_directory:  ~/code
+
+config_android: &config_env
+  environment:
+    JAVA_HOME: "/usr/lib/jvm/java-11-openjdk-amd64"
+    JAVA_TOOL_OPTIONS: "-Xmx4096m -XX:+UseParallelGC"
+    GRADLE_OPTS: "-Dorg.gradle.daemon=true -Dorg.gradle.workers.max=2 -Dkotlin.incremental=true -Dkotlin.compiler.execution.strategy=in-process"
+    TERM: dumb
+
+
+filter_master_only: &filter_master_only
+  filters:
+    branches:
+      only: master, dev
+
+
+jobs:
+  job_run_tests:
+    <<: *config_docker
+    <<: *config_env
+    steps:
+      - checkout
+      - run:
+          name: Run Tests
+          command: ./gradlew test
+      - run:
+          name: Save test results (html page, see Artifacts)
+          command: |
+            mkdir -p test-results/html/
+            find . -type d -regex ".*/*reports/tests" -exec cp -avr {} test-results/html/ \;
+          when: always
+      - run:
+          name: Save test results (xml results, see Tests)
+          command: |
+            mkdir -p test-results/xml/
+            find . -type f -regex ".*/*test-results/.*xml" -exec cp {} test-results/xml/ \;
+          when: always
+      - store_test_results:
+          path: test-results
+      - store_artifacts:
+          path: test-results
+          destination: reports/
+
+workflows:
+  version: 2
+
+  # run tests on every commits to master
+  run-tests-only:
+    jobs:
+      - job_run_tests
