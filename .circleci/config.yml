@@ -1,26 +1,56 @@
-# Use the latest 2.1 version of CircleCI pipeline process engine.
-# See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
 
-# Define a job to be invoked later in a workflow.
-# See: https://circleci.com/docs/2.0/configuration-reference/#jobs
+config_docker: &config_docker
+  docker:
+    - image: cimg/android:2021.10.2
+  resource_class: large
+  working_directory:  ~/code
+
+config_android: &config_env
+  environment:
+    JAVA_HOME: "/usr/lib/jvm/java-11-openjdk-amd64"
+    JAVA_TOOL_OPTIONS: "-Xmx4096m -XX:+UseParallelGC"
+    GRADLE_OPTS: "-Dorg.gradle.daemon=true -Dorg.gradle.workers.max=2 -Dkotlin.incremental=true -Dkotlin.compiler.execution.strategy=in-process"
+    TERM: dumb
+
+
+filter_master_only: &filter_master_only
+  filters:
+    branches:
+      only: master, dev
+
+
 jobs:
-  say-hello:
-    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
-    docker:
-      - image: cimg/base:stable
-    # Add steps to the job
-    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
+  job_run_tests:
+    <<: *config_docker
+    <<: *config_env
     steps:
       - checkout
       - run:
-          name: "Say hello"
-          command: "echo Hello, World!"
+          name: Run Tests
+          command: ./gradlew testDevDebug
+      - run:
+          name: Save test results (html page, see Artifacts)
+          command: |
+            mkdir -p test-results/html/
+            find . -type d -regex ".*/*reports/tests" -exec cp -avr {} test-results/html/ \;
+          when: always
+      - run:
+          name: Save test results (xml results, see Tests)
+          command: |
+            mkdir -p test-results/xml/
+            find . -type f -regex ".*/*test-results/.*xml" -exec cp {} test-results/xml/ \;
+          when: always
+      - store_test_results:
+          path: test-results
+      - store_artifacts:
+          path: test-results
+          destination: reports/
 
-# Invoke jobs via workflows
-# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-  say-hello-workflow:
+  version: 2
+
+  # run tests on every commits to master
+  run-tests-only:
     jobs:
-      - say-hello
+      - job_run_tests
